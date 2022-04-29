@@ -38,7 +38,11 @@ local fetcher = fiber:new(function()
   sock:settimeout(0)
   sock:send "hello"
 
-  local line, err = fiber.wait_for(10, sock.receive, sock, "*l")
+  local line, err
+  fiber.wait_for(10, function()
+    line, err = sock:receive "*l"
+    return err ~= "timeout"
+  end)
   print(line or err)
 end)
 
