@@ -120,7 +120,7 @@ function fiber.loop(t)
   for _, v in pairs(t) do
     table.insert(fibers, v)
   end
-  while not stop do
+  while not stop and #fibers > 0 do
     for i=#fibers,1,-1 do
       local t = fibers[i]
       local ok, err = t:resume()
