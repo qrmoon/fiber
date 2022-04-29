@@ -40,7 +40,6 @@ local fetcher = fiber:new(function()
 
   local line, err = fiber.wait_for(10, sock.receive, sock, "*l")
   print(line or err)
-  sock:close()
 end)
 
 local other = fiber:new(function()
