@@ -14,6 +14,7 @@ fiber.yield = coroutine.yield
 function fiber:init(func)
   self.co = coroutine.create(func)
   self.time = 0
+  self.defers = {}
 end
 
 --- resume a fiber,
@@ -43,6 +44,12 @@ end
 
 --- close a fiber
 function fiber:close()
+  for _, d in ipairs(self.defers) do
+    local ok, err = pcall(d.func, table.unpack(d.args))
+    if not ok then
+      io.stderr:write(err .. "\n")
+    end
+  end
   coroutine.close(self.co)
 end
 
@@ -138,6 +145,19 @@ end
 --- return current fiber count
 function fiber.count()
   return #fibers
+end
+
+--- defer a function to be executed when the fiber quits
+-- (possibly due to an error)
+-- @tparam function func
+-- @param ...
+function fiber.defer(func, ...)
+  table.insert(
+    fiber.current.defers, 1, {
+      func = func,
+      args = { ... }
+    }
+  )
 end
 
 return fiber

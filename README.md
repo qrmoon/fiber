@@ -33,7 +33,8 @@ local fiber = require "fiber"
 local socket = require "socket"
 
 local fetcher = fiber:new(function()
-  local sock = sock.connect("127.0.0.1", 5000)
+  local sock = socket.connect("127.0.0.1", 5000)
+  fiber.defer(sock.close, sock)
   sock:settimeout(0)
   sock:send "hello"
 
