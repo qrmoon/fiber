@@ -2,6 +2,7 @@
 -- @classmod fiber
 
 local class = require "class"
+local unpack = table.unpack or unpack
 
 local fiber = class "Fiber"
 fiber.current = nil
@@ -33,7 +34,7 @@ function fiber:resume(...)
   local finish = os.clock()
   self.time = self.time + finish - start
   fiber.current = nil
-  return table.unpack(res)
+  return unpack(res)
 end
 
 --- get the status of a fiber's coroutine
@@ -45,7 +46,7 @@ end
 --- close a fiber
 function fiber:close()
   for _, d in ipairs(self.defers) do
-    local ok, err = pcall(d.func, table.unpack(d.args))
+    local ok, err = pcall(d.func, unpack(d.args))
     if not ok then
       io.stderr:write(err .. "\n")
     end
@@ -70,7 +71,7 @@ function fiber.wait(func, ...)
   while true do
     local res = { func(...) }
     if res[1] then
-      return table.unpack(res)
+      return unpack(res)
     end
     fiber.yield()
   end
@@ -88,7 +89,7 @@ function fiber.wait_for(time, func, ...)
     end
     local res = { func(...) }
     if res[1] then
-      return table.unpack(res)
+      return unpack(res)
     end
     fiber.yield()
   end
