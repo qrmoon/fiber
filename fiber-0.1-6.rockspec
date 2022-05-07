@@ -1,5 +1,5 @@
 package = "fiber"
-version = "0.1-5"
+version = "0.1-6"
 source = {
    url = "git+https://github.com/qrmoon/fiber.git"
 }
@@ -8,7 +8,7 @@ description = {
    license = "MIT"
 }
 dependencies = {
-   "lua >= 5.3, < 5.5",
+   "lua >= 5.1, < 5.5",
    "qlass >= 0.1"
 }
 build = {

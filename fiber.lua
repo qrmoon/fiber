@@ -51,7 +51,9 @@ function fiber:close()
       io.stderr:write(err .. "\n")
     end
   end
-  coroutine.close(self.co)
+  if coroutine.close then
+    coroutine.close(self.co)
+  end
 end
 
 --- pause the current fiber for a given time
