@@ -113,6 +113,7 @@ function fiber.spawn(func, ...)
   else
     table.insert(fibers, t)
   end
+  return t
 end
 
 local stop = false
