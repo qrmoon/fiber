@@ -59,10 +59,12 @@ end
 --- pause the current fiber for a given time
 -- @number sec the time to sleep in seconds
 function fiber.sleep(sec)
+  local res
   local start = os.clock()
   while os.clock() - start < sec do
-    fiber.yield()
+    res = { fiber.yield() }
   end
+  return unpack(res)
 end
 
 --- keep yielding until func returns a positive value
